@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: njr-vol
+spec:
+  capacity:
+    storage: 10G # storage from host
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce # --> because we are using minikube # multiple pods so use the #ReadWriteMini
+  persistentVolumeReclaimPolicy: Recycle # --> re-use block  # Reclaim --> can not re-use
+  storageClassName: standard  # any name
+  hostPath:  # because personal stoage path
+    path: /mnt/data

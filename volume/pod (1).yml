@@ -1,0 +1,25 @@
+# pod or deployment we can use
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: njr-app-pod
+  labels:
+    name: njr-app-pod
+spec:
+  volumes:
+    - name: njr-vol
+      PersistentVolumeClaim:
+        claimName: njr-pvc
+  containers:
+  - name: njr-nginx-container
+    image: nginx
+    ports:
+      - containerPort: 80
+    volumeMounts:
+      - mountPath: /var/www/html 
+        name: njr-vol
+
+# here we are refering the already created volume.
+# that's why we are additionally specifying the volumes & volumeMounts !
+

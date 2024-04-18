@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: njr-pvc
+spec:
+  resources:
+    requests:
+      storage: 5G  # from that 10G, how many GB you really need to use
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
