@@ -1,0 +1,27 @@
+# take a default service module from plugin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: njr-app-home
+spec:
+  selector:
+    app: njr-app-home
+  ports:
+  - port: 80
+    targetPort: 80
+...
+# here we did't specify the service-type so it will take a cluster-ip
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: njr-app-mobile
+spec:
+  selector:
+    app: njr-app-mobile
+  ports:
+  - port: 80
+    targetPort: 80
+...

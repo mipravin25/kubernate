@@ -1,0 +1,40 @@
+# /var/www/html
+# /index.html
+# /watch-ms/index.html   --> considerable
+# /mobile-ms/index.html
+# /clothes-ms/index.html
+
+# If I hit "/" --> so i will get index.html file
+# If I hit "/mobile"  ---> so i will get /mobile-ms/index.html
+
+# pathType: /
+# I will hit "/" so i will not get index.html, it works only with exact path like "/index.html"
+# know as pathType: /mobile-ms
+# know as pathType: /clothes-ms
+
+# pathType: Prefix
+# known as "/"
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: njr-app-ingress
+  labels:
+    name: njr-app-ingress
+spec:
+  rules:
+  - host: njr.com # domain
+    http:
+      paths:
+      - pathType: Prefix    
+        path: "/"           
+        backend:              # like a listner rule in ALB
+          service:
+            name: njr-app-home
+            port: 
+              number: 80
+# deploy ingress-rule
+# kubectl get apply -f ingress.yml
+# kubectl get all
+# kubectl get ingress
+# kubectl describe ing <ingress-name>

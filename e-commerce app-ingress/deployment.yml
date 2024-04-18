@@ -1,0 +1,44 @@
+# script madde bye directly from plugins (deployment-simple)
+# default page of applicaiton-1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: njr-app-home
+spec:
+  selector:
+    matchLabels:
+      app: njr-app-home
+  template:
+    metadata:
+      labels:
+        app: njr-app-home
+    spec:
+      containers:
+      - name: njr-app-home-container
+        image: httpd
+        ports:
+        - containerPort: 80
+...
+# apply the file & run the commands on ppt
+# creating the home-page application-2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: njr-app-mobile
+spec:
+  selector:
+    matchLabels:
+      app: njr-app-mobile
+  template:
+    metadata:
+      labels:
+        app: njr-app-mobile
+    spec:
+      containers:
+      - name: njr-app-mobile-container
+        image: nginx
+        ports:
+        - containerPort: 80
+...
