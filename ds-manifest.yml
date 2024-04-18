@@ -1,0 +1,29 @@
+# deamon-set: It is Kubernetes feature that lets you run a Kubernetes pod on all cluster nodes that meet certain criteria.
+# If you want to run monitoring pod in all node so i prefer to use DS.
+# Here I am copying whole SS.yml file here <>
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: banking-ms-ds
+  labels:
+    app: banking-ms-app
+spec:
+  template:
+    metadata:
+      labels:
+        app: banking-ms-app
+    spec:
+      containers:
+        - name: nginx-banking-ms-app-container
+          image: nginx
+          ports:
+            - name: nginx
+              containerPort: 80
+
+# kubectl apply -f ds-manifest.yml
+# kubectl get ds
+
+# Example-1: ds example
+# kubectl get nodes
+# kubectl get nodes --show-labels

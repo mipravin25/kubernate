@@ -1,0 +1,76 @@
+---
+# rc is reponsible to create a pod & maintaint the pod
+# kubectl api-resources | grep replication
+apiVersion: V1
+kind: ReplicationController
+metadata:
+  name: eb-ms-rc
+  labels:
+    app: em-ms-app
+# here we didn't specify the namespace, get default
+spec:  # we specify the pods, pods template.
+  replicas: 3 # creating the 3 replica of pod
+  selector:  # here we mention the label to refer the pod
+    app: eb-ms-app
+  template: #so I directly copy the pods details from pod-manifest.yml file, from metadata
+    metadata: 
+        name: eb-ms-pod
+        labels: 
+          env: uat-env
+          app: eb-ms-app 
+        # namespace: uat
+    spec: 
+      containers:
+        - name: eb-ms-nginx-instance
+          image: nginx
+          ports:
+            - name: http
+              containerPort: 80
+            # - name: eb-tomcat-instance
+            #   image: tomcat
+            #   ports:
+            #     - name: java
+            #       containerPort: 8080
+# now, on that pod we need a svc-manifest.yml fil because we need to expose the svc
+...
+
+---
+# copying svc-manifest.yml file
+# svc-manifest for NodePort
+apiVersion: v1
+kind: Service
+metadata:
+  name: eb-ms-pod-service
+  labels:
+    env: uat-env
+    app: eb-ms-app 
+  # namespace: uat #<ns-name>
+spec:
+  type: NodePort
+  selector:
+    app: eb-ms-app #[app: eb-ms-app]
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    # - name: http
+    #   protocol: TCP
+    #   port: 8080
+    #   targetPort: 8080
+...
+
+# kubectl apply -f rc-svc-manifest.yml
+# kbectl get all --> shows the rc count
+# minikube ip  
+# curl <node-ip>:<Node-port>
+# kubectl get all  ---> all 3 pods are running trying to delte one pod
+# kubectl delete pod <pod-name>
+# kubectl get all ---> STATUS: New pod is creating
+
+## we can change replica's count
+
+# w/o rc-manifest file
+# kubectl scale rc <rc-name> --replica 5  ---> command through we can also change
+# kubectl describe rc <rc-name> ----> detailed info about rc
+#IMP: # kubectl edit rc <rc-name>   --> Existing object conf-file, actual implemented conf file of rc, we can also change the rc count from conf file

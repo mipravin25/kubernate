@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: njr-eb-ms-app
+data:
+  password: 'redhat'  # password = variable, redhat = values
+  username: admin
+  local user: jarvis
+
+# kubectl apply -f ConfigMap-manifest.yml
+# kubectl get cm --> 3 values are stored show all values info below command
+# kubectl describe cm <cm-name>
+  # because of this in future newly created all pods we can create all env
+
+# Example: Comes to the ss-manifest.yml, file call the mariadb password value from ConfigMap.yml file
+# env:
+#   - name: MARIADB_ROOT_PASSWORD
+#     valueFrom:
+#       configMapKeyRef:
+#         key: <password_data_in_cfg>
+#         name: <cfg_map-name>
+
+# kubectl apply -f ss-maifest.yml
+# kubectl get pods
+# kubectl exec -it <any-pod-name> --bash
+  ## env --command to see the enviorment
+
+# I can see my password from # kubectl describe cm <cm-name> so ConfigMap only shows data, to store safelyin encrepted format called as "Secrets"

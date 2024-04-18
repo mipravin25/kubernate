@@ -1,0 +1,34 @@
+# kubectl api-resources | grep replication
+apiVersion: V1
+# kind: apiVersion: v1 
+kind: ReplicationController
+metadata:
+  name: eb-ms-rc
+  labels:
+    app: em-ms-app
+# here we didn't specify the namespace, get default
+spec:  # we specify the pods, pods template.
+  template: #so I directly copy the pods details from pod-manifest.yml file, from metadata
+    metadata: 
+        name: eb-ms-pod
+        labels: 
+          env: uat-env
+          app: eb-ms-app 
+        # namespace: uat
+    spec: 
+      containers:
+        - name: eb-ms-nginx-instance
+          image: nginx
+          ports:
+            - name: http
+              containerPort: 80
+            # - name: eb-tomcat-instance
+            #   image: tomcat
+            #   ports:
+            #     - name: java
+            #       containerPort: 8080
+  replicas: 3 # creating the 3 replica of pod
+  selector:  # here we mention the label to refer the pod
+    app: eb-ms-app
+# now, on that pod we need a svc-manifest.yml fil because we need to expose the svc
+

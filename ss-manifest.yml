@@ -1,0 +1,53 @@
+# statefulstate file with MariaDB container for that need password pass using enviorment
+# To pass enviorment using "env"
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kart-ms-ss
+  labels:
+    app: kart-ms-app
+spec:
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: kart-ms-app
+    spec:
+      containers:
+        - name: mariadb-kart-ms-app-container
+          image: mariadb
+          ports:
+            - name: db
+              containerPort: 3306
+          env:  # set mariadb password for root
+            - name: MARIADB_ROOT_PASSWORD
+              value: redhat
+
+            # - name: MARIADB_ROOT_PASSWORD
+            #   valueFrom:
+            #     secretKeyRef:
+            #       key: mysql_password
+            #       name: njr-eb-ms-app-cred
+
+            # - name: MYSQL_USER
+            #   valueFrom:
+            #     secretKeyRef:
+            #       key: mysql_user
+            #       name: njr-eb-ms-app-cred
+
+# kubectl apply -f ss-manifest.yml
+# kubectl logs <pod-name>
+# kubectl get pods
+# kubectl scale sts <sts-name> --replicas 2
+# kubectl get pods
+# we can use sts in stateful based application, like mariadb, mogodb, sql application, rabbitmq
+
+
+
+# after the secret.yml configuration run the file,
+# kubectl apply -f ss-manifest.yml
+# kubectl get ss
+# kubectl get sts
+# kubectl get pods
+# kubectl exec -it <pod-name> --env
